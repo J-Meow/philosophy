@@ -38,6 +38,10 @@ async function doPage(url: string) {
             const doc = parser.parseFromString(html, "text/html")
             const nextPage = "https://en.wikipedia.org" + doc.querySelector('#mw-content-text p:not(.hatnote) a[href^="/wiki/"]')?.getAttribute("href")
             console.log(`Going from ${url} -> ${nextPage}`)
+            if (chain.slice(0, chain.length - 1).includes(url)) {
+                console.log("Got stuck in a loop that started with " + url)
+                return
+            }
             chain.push(nextPage)
             doPage(chain[chain.length - 1])
         } else {
