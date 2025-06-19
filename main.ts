@@ -16,11 +16,6 @@ while (true) {
         const res = await fetch(page)
         if (res.status == 200) {
             chain.push(page)
-            const html = await res.text()
-            const parser = new DOMParser()
-            const doc = parser.parseFromString(html, "text/html")
-            const title = doc.querySelector("title")?.innerText.split(" - Wikipedia")[0]!
-            chainTitles.push(title)
             break
         } else {
             console.log("Error " + res.status + " " + res.statusText)
@@ -34,6 +29,7 @@ console.log("Starting path from " + chain[0])
 async function doPage(url: string) {
     if (url == "https://en.wikipedia.org/wiki/Philosophy") {
         console.log("Got to philosophy in " + (chain.length - 1) + " clicks")
+        chainTitles.push("\x1b[1mPhilosophy\x1b[22m")
         console.log("Path: " + chainTitles.join(" -> "))
         return
     }
