@@ -1,6 +1,7 @@
 import { DOMParser } from "jsr:@b-fuze/deno-dom"
 
 const chain: string[] = []
+const chainTitles: string[] = []
 
 while (true) {
     let page = prompt("Page:")!
@@ -15,6 +16,11 @@ while (true) {
         const res = await fetch(page)
         if (res.status == 200) {
             chain.push(page)
+            const html = await res.text()
+            const parser = new DOMParser()
+            const doc = parser.parseFromString(html, "text/html")
+            const title = doc.querySelector("title")?.innerText.split(" - Wikipedia")[0]!
+            chainTitles.push(title)
             break
         } else {
             console.log("Error " + res.status + " " + res.statusText)
@@ -28,6 +34,7 @@ console.log("Starting path from " + chain[0])
 async function doPage(url: string) {
     if (url == "https://en.wikipedia.org/wiki/Philosophy") {
         console.log("Got to philosophy in " + (chain.length - 1) + " clicks")
+        console.log("Path: " + chainTitles.join(" -> "))
         return
     }
     if (chain.slice(0, chain.length - 1).includes(url)) {
@@ -40,6 +47,8 @@ async function doPage(url: string) {
             const html = await res.text()
             const parser = new DOMParser()
             const doc = parser.parseFromString(html, "text/html")
+            const title = doc.querySelector("title")?.innerText.split(" - Wikipedia")[0]!
+            chainTitles.push(title)
             const nextPage =
                 "https://en.wikipedia.org" +
                 Array(...doc.querySelectorAll('#mw-content-text a[href^="/wiki/"]'))
