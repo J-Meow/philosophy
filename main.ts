@@ -26,6 +26,10 @@ while (true) {
 console.log("Starting path from " + chain[0])
 
 async function doPage(url: string) {
+    if (url == "https://en.wikipedia.org/wiki/Philosophy") {
+        console.log("Got to philosophy in " + (chain.length - 1) + " clicks")
+        return
+    }
     try {
         const res = await fetch(url)
         if (res.status == 200) {
