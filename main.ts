@@ -30,6 +30,10 @@ async function doPage(url: string) {
         console.log("Got to philosophy in " + (chain.length - 1) + " clicks")
         return
     }
+    if (chain.slice(0, chain.length - 1).includes(url)) {
+        console.log("Got stuck in a loop that started with " + url)
+        return
+    }
     try {
         const res = await fetch(url)
         if (res.status == 200) {
@@ -43,10 +47,6 @@ async function doPage(url: string) {
                     .filter((x) => !(x.getAttribute("href")?.startsWith("/wiki/File:") || x.getAttribute("href")?.startsWith("/wiki/User:") || x.parentElement?.classList.contains("hatnote") || Array(...doc.querySelectorAll("table.infobox a")).includes(x)))[0]
                     .getAttribute("href")
             console.log(`Going from ${url} -> ${nextPage}`)
-            if (chain.slice(0, chain.length - 1).includes(url)) {
-                console.log("Got stuck in a loop that started with " + url)
-                return
-            }
             chain.push(nextPage)
             doPage(chain[chain.length - 1])
         } else {
