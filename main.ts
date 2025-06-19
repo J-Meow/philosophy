@@ -52,8 +52,24 @@ async function doPage(url: string) {
             const nextPage =
                 "https://en.wikipedia.org" +
                 Array(...doc.querySelectorAll('#mw-content-text a[href^="/wiki/"]'))
-                    // Sorry for terrible one-liner, Prettier decided it should be this way
-                    .filter((x) => !(x.getAttribute("href")?.startsWith("/wiki/File:") || x.getAttribute("href")?.startsWith("/wiki/User:") || x.parentElement?.classList.contains("hatnote") || Array(...doc.querySelectorAll("table.infobox a")).includes(x)))[0]
+                    .filter(
+                        (x) =>
+                            !(
+                                x.getAttribute("href")?.startsWith("/wiki/File:") ||
+                                x.getAttribute("href")?.startsWith("/wiki/Wikipedia:") ||
+                                x.getAttribute("href")?.startsWith("/wiki/Special:") ||
+                                x.getAttribute("href")?.startsWith("/wiki/Talk:") ||
+                                x.getAttribute("href")?.startsWith("/wiki/Template:") ||
+                                x.getAttribute("href")?.startsWith("/wiki/Help:") ||
+                                x.getAttribute("href")?.startsWith("/wiki/Category:") ||
+                                x.getAttribute("href")?.startsWith("/wiki/User:") ||
+                                x.getAttribute("href")?.endsWith("_(disambiguation)") ||
+                                x.parentElement?.classList.contains("hatnote") ||
+                                Array(...doc.querySelectorAll("table a")).includes(x) ||
+                                Array(...doc.querySelectorAll(".thumbinner a")).includes(x) ||
+                                Array(...doc.querySelectorAll("figure a")).includes(x)
+                            )
+                    )[0]
                     .getAttribute("href")
             console.log(`Going from ${url} -> ${nextPage}`)
             chain.push(nextPage)
