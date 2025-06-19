@@ -3,6 +3,10 @@ import { DOMParser } from "jsr:@b-fuze/deno-dom"
 const chain: string[] = []
 const chainTitles: string[] = []
 
+function bold(string: string) {
+    return `\x1b[1m${string}\x1b[22m`
+}
+
 while (true) {
     let page = prompt("Page:")!
     if (!page) {
@@ -24,17 +28,17 @@ while (true) {
         console.log(err)
     }
 }
-console.log("Starting path from " + chain[0])
+console.log(bold("Starting path from " + chain[0]))
 
 async function doPage(url: string) {
     if (url == "https://en.wikipedia.org/wiki/Philosophy") {
-        console.log("Got to philosophy in " + (chain.length - 1) + " clicks")
-        chainTitles.push("\x1b[1mPhilosophy\x1b[22m")
-        console.log("Path: " + chainTitles.join(" -> "))
+        console.log(bold("Got to philosophy in " + (chain.length - 1) + " clicks"))
+        chainTitles.push(bold("Philosophy"))
+        console.log(bold("Path: ") + chainTitles.join(" -> "))
         return
     }
     if (chain.slice(0, chain.length - 1).includes(url)) {
-        console.log("Got stuck in a loop that started with " + url)
+        console.log(bold("Got stuck in a loop that started with " + url))
         return
     }
     try {
