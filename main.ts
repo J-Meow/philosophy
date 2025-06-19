@@ -36,7 +36,12 @@ async function doPage(url: string) {
             const html = await res.text()
             const parser = new DOMParser()
             const doc = parser.parseFromString(html, "text/html")
-            const nextPage = "https://en.wikipedia.org" + doc.querySelector('#mw-content-text p:not(.hatnote) a[href^="/wiki/"]')?.getAttribute("href")
+            const nextPage =
+                "https://en.wikipedia.org" +
+                Array(...doc.querySelectorAll('#mw-content-text a[href^="/wiki/"]'))
+                    // Sorry for terrible one-liner, Prettier decided it should be this way
+                    .filter((x) => !(x.getAttribute("href")?.startsWith("/wiki/File:") || x.getAttribute("href")?.startsWith("/wiki/User:") || x.parentElement?.classList.contains("hatnote") || Array(...doc.querySelectorAll("table.infobox a")).includes(x)))[0]
+                    .getAttribute("href")
             console.log(`Going from ${url} -> ${nextPage}`)
             if (chain.slice(0, chain.length - 1).includes(url)) {
                 console.log("Got stuck in a loop that started with " + url)
