@@ -7,6 +7,8 @@ function bold(string: string) {
     return `\x1b[1m${string}\x1b[22m`
 }
 
+console.log(bold("Welcome to the Philosophy Checker") + "\n\x1b[3mDisclaimer: this \x1b[9mtoy\x1b[29m tool may not always avoid parenthesized links correctly, so it may not always be entirely accurate. Usually it works anyway though. Have fun!\x1b[23m\n\nP.S. if it's giving you 404 errors please copy and paste the full Wikipedia link into the following text box.\n")
+
 while (true) {
     let page = prompt("Page:")!.replaceAll(" ", "_")
     if (!page) {
