@@ -23,6 +23,9 @@ while (true) {
             break
         } else {
             console.log("Error " + res.status + " " + res.statusText)
+            if (res.status == 404) {
+                console.log("btw it's case-sensitive")
+            }
         }
     } catch (err) {
         console.log(err)
