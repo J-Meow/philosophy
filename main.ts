@@ -32,9 +32,9 @@ console.log(bold("Starting path from " + chain[0]))
 
 async function doPage(url: string) {
     if (url == "https://en.wikipedia.org/wiki/Philosophy") {
-        console.log(bold("Got to philosophy in " + (chain.length - 1) + " clicks"))
+        console.log(bold("\nGot to philosophy in " + (chain.length - 1) + " clicks"))
         chainTitles.push(bold("Philosophy"))
-        console.log(bold("Path: ") + chainTitles.join(" -> "))
+        console.log(bold("Path: ") + chainTitles.join("\n   -> "))
         return
     }
     if (chain.slice(0, chain.length - 1).includes(url)) {
