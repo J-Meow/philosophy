@@ -8,7 +8,7 @@ function bold(string: string) {
 }
 
 while (true) {
-    let page = prompt("Page:")!
+    let page = prompt("Page:")!.replaceAll(" ", "_")
     if (!page) {
         console.log("Please enter a page name or URL.")
         continue
